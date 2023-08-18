@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22E261" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="LocationDataEntity" representedClassName="LocationDataEntity" syncable="YES" codeGenerationType="class">
         <attribute name="accuracy" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="capturedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -9,6 +9,23 @@
         <attribute name="planterCheckInId" optional="YES" attributeType="String"/>
         <attribute name="treeUUID" optional="YES" attributeType="String"/>
         <attribute name="uploaded" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+    </entity>
+    <entity name="MessageEntity" representedClassName="MessageEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="body" optional="YES" attributeType="String"/>
+        <attribute name="composedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="from" optional="YES" attributeType="String"/>
+        <attribute name="isHidden" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="messageId" optional="YES" attributeType="String"/>
+        <attribute name="parentMessageId" optional="YES" attributeType="String"/>
+        <attribute name="subject" optional="YES" attributeType="String"/>
+        <attribute name="surveyResponse" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[String]"/>
+        <attribute name="to" optional="YES" attributeType="String"/>
+        <attribute name="type" optional="YES" attributeType="String"/>
+        <attribute name="unread" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="uploaded" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="videoLink" optional="YES" attributeType="String"/>
+        <relationship name="planterIdentification" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PlanterIdentification" inverseName="messages" inverseEntity="PlanterIdentification"/>
+        <relationship name="survey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SurveyEntity" inverseName="message" inverseEntity="SurveyEntity"/>
     </entity>
     <entity name="PlanterDetail" representedClassName="PlanterDetail" syncable="YES" codeGenerationType="class">
         <attribute name="acceptedTerms" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
@@ -33,8 +50,21 @@
         <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="photoURL" optional="YES" attributeType="String"/>
         <attribute name="uuid" optional="YES" attributeType="String"/>
+        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MessageEntity" inverseName="planterIdentification" inverseEntity="MessageEntity"/>
         <relationship name="planter" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PlanterDetail" inverseName="identification" inverseEntity="PlanterDetail"/>
         <relationship name="trees" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TreeCapture" inverseName="planterIdentification" inverseEntity="TreeCapture"/>
+    </entity>
+    <entity name="SurveyEntity" representedClassName="SurveyEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="response" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="uuid" optional="YES" attributeType="String"/>
+        <relationship name="message" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MessageEntity" inverseName="survey" inverseEntity="MessageEntity"/>
+        <relationship name="questions" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="SurveyQuestion" inverseName="survey" inverseEntity="SurveyQuestion"/>
+    </entity>
+    <entity name="SurveyQuestion" representedClassName="SurveyQuestion" syncable="YES" codeGenerationType="class">
+        <attribute name="choices" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[String]"/>
+        <attribute name="prompt" optional="YES" attributeType="String"/>
+        <relationship name="survey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SurveyEntity" inverseName="questions" inverseEntity="SurveyEntity"/>
     </entity>
     <entity name="TreeCapture" representedClassName="TreeCapture" syncable="YES" codeGenerationType="class">
         <attribute name="bundleId" optional="YES" attributeType="String"/>
@@ -49,10 +79,4 @@
         <attribute name="uuid" optional="YES" attributeType="String"/>
         <relationship name="planterIdentification" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PlanterIdentification" inverseName="trees" inverseEntity="PlanterIdentification"/>
     </entity>
-    <elements>
-        <element name="LocationDataEntity" positionX="-342" positionY="-297" width="128" height="149"/>
-        <element name="PlanterDetail" positionX="-546.234375" positionY="-437.171875" width="128" height="223"/>
-        <element name="PlanterIdentification" positionX="-331.33203125" positionY="-319.94921875" width="128" height="133"/>
-        <element name="TreeCapture" positionX="-132.37890625" positionY="-338.75" width="128" height="208"/>
-    </elements>
 </model>
